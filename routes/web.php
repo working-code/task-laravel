@@ -38,4 +38,11 @@ Route::get('products/delete/{id}', [\App\Http\Controllers\ProductController::cla
 
 Route::get('orders/all', [\App\Http\Controllers\OrderController::class, 'all'])->name('orders.all');
 
+Route::get('notifications/all', [\App\Http\Controllers\NotificationController::class, 'all'])->name('notifications.all');
+Route::get('notifications/new', [\App\Http\Controllers\NotificationController::class, 'addView'])->name('notifications.new');
+Route::post('notifications/add', [\App\Http\Controllers\NotificationController::class, 'add'])->name('notifications.add');
+Route::get('notifications/edit/{id}', [\App\Http\Controllers\NotificationController::class, 'edit'])->name('notifications.edit');
+Route::post('notifications/save', [\App\Http\Controllers\NotificationController::class, 'save'])->name('notifications.save');
+Route::get('notifications/delete/{id}', [\App\Http\Controllers\NotificationController::class, 'delete'])->name('notifications.delete');
+
 require __DIR__.'/auth.php';
