@@ -33,7 +33,7 @@ class ProductController extends Controller
         for ($i = 1; $i <= $countPage; $i++) {
             $pages[] = $i;
         }
-        return view('admin.products.all', ['products' => $products, 'pages' => $pages, 'countPage' => $countPage]);
+        return view(Role::getRole().'.products.all', ['products' => $products, 'pages' => $pages, 'countPage' => $countPage]);
     }
 
     public function one(Request $request)
@@ -70,7 +70,7 @@ class ProductController extends Controller
             $pages[] = $i;
         }
         $categorieName = Categorie::getName($categoriesId);
-        return view('admin.products.allFromCatigorie', ['products' => $products, 'pages' => $pages, 'countPage' => $countPage, 'categorieName' => $categorieName]);
+        return view(Role::getRole().'.products.allFromCatigorie', ['products' => $products, 'pages' => $pages, 'countPage' => $countPage, 'categorieName' => $categorieName]);
     }
 
     public function addView()

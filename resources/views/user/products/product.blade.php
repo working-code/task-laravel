@@ -13,13 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="menu-admin">
-        @include('admin.menu')
-    </div>
 
-    <a href="{{route('products.new')}}" class="btn-admin">Добавить игру</a>
-    <a href="{{route('products.edit', ['id' => $product->id])}}" class="btn-admin">Редактировать</a>
-    <a href="{{route('products.delete', ['id' => $product->id])}}" class="btn-admin">Удалить</a><br />
 
     <div class="content-main__container">
         <div class="product-container">
@@ -30,7 +24,7 @@
                     <div class="product-container__content-text__price__value">
                         Цена: <b>{{$product->price}}</b>
                         руб
-                    </div>
+                    </div><a href="#" class="btn btn-blue">Купить</a>
                 </div>
                 <div class="product-container__content-text__description">
                     {{$product->description}}
