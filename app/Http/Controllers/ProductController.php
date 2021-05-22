@@ -4,23 +4,73 @@ namespace App\Http\Controllers;
 
 use App\Models\Categorie;
 use App\Models\Product;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManager;
 
 class ProductController extends Controller
 {
-    const PATH_IMG = '/var/www/html/public' . DIRECTORY_SEPARATOR . 'img';
 
-    public function all()
+    public function all(Request $request)
     {
-        $products = Product::all();
-        return view('admin.products.all', ['products' => $products]);
+        $request->validate([
+            'page' => 'integer'
+        ]);
+
+        $limit = 6;
+        $offset = 0;
+        $page = --$request->page;
+        if ($page) {
+            $offset = $page * $limit;
+        }
+
+        $products = Product::query()->orderBy('id', 'desc')->limit($limit)->offset($offset)->get();
+        $productsCount = Product::query()->orderBy('id', 'desc')->count();
+
+        $pages = [];
+        $countPage = ceil($productsCount / $limit);
+        for ($i = 1; $i <= $countPage; $i++) {
+            $pages[] = $i;
+        }
+        return view('admin.products.all', ['products' => $products, 'pages' => $pages, 'countPage' => $countPage]);
     }
 
-    public function one($id)
+    public function one(Request $request)
     {
-        $product = Product::query()->find($id);
-        return view('product', ['product' => $product]);
+        $id = $request->id;
+        if ($id) {
+            $product = Product::query()->find($id);
+            return view(Role::getRole() . '.products.product', ['product' => $product]);
+        }
+    }
+
+    public function allFromCategorie(Request $request)
+    {
+        $request->validate([
+            'id' => 'integer',
+            'page' => 'integer'
+        ]);
+
+        $limit = 3;
+        $offset = 0;
+        $page = --$request->page;
+        if ($page) {
+            $offset = $page * $limit;
+        }
+
+        $categoriesId = $request->id;
+
+        $products = Product::query()->where('categories_id', '=', $categoriesId)->orderBy('id', 'desc')->limit($limit)->offset($offset)->get();
+        $productsCount = Product::query()->where('categories_id', '=', $categoriesId)->orderBy('id', 'desc')->count();
+
+        $pages = [];
+        $countPage = ceil($productsCount / $limit);
+        for ($i = 1; $i <= $countPage; $i++) {
+            $pages[] = $i;
+        }
+        $categorieName = Categorie::getName($categoriesId);
+        return view('admin.products.allFromCatigorie', ['products' => $products, 'pages' => $pages, 'countPage' => $countPage, 'categorieName' => $categorieName]);
     }
 
     public function addView()
@@ -31,7 +81,6 @@ class ProductController extends Controller
 
     public function add(Request $request)
     {
-
         $request->validate([
             'name' => 'required|String',
             'price' => 'required|numeric',
@@ -39,14 +88,13 @@ class ProductController extends Controller
             'description' => 'required|String',
             'img1' => 'required|file|image'
         ]);
-
         $img = $request->file('img1');
         $nameImg = md5(time()) . '.' . $img->extension();
 
         $manager = new ImageManager();
         $manager->make($img->path())->resize(900, 900, function ($constraint) {
             $constraint->aspectRatio();
-        })->save(self::PATH_IMG . DIRECTORY_SEPARATOR . $nameImg);
+        })->save(Product::getPathDirImg() . DIRECTORY_SEPARATOR . $nameImg);
 
         $product = new Product([
             'name' => $request->name,
@@ -92,7 +140,7 @@ class ProductController extends Controller
             $manager = new ImageManager();
             $manager->make($img->path())->resize(900, 900, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save(self::PATH_IMG . DIRECTORY_SEPARATOR . $nameImg);
+            })->save(Product::getPathDirImg() . DIRECTORY_SEPARATOR . $nameImg);
             $product->img1 = $nameImg;
         }
 

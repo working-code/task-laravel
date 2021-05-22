@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categorie;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
 {
     public function all()
     {
-        $categories = Categorie::all();
-        return view('admin.categories.all', ['categories' => $categories]);
+        $role = Role::getRole();
+        return view("$role.categories.all", ['categories' => Categorie::all()]);
     }
 
     public function addView()
@@ -23,7 +24,7 @@ class CategorieController extends Controller
         $request->validate([
             'name' => 'required|String'
         ]);
-        $categorie = new Categorie(['name'=> $request->name]);
+        $categorie = new Categorie(['name' => $request->name]);
         $categorie->save();
         return redirect()->route('categories.all');
     }
@@ -31,7 +32,7 @@ class CategorieController extends Controller
     public function edit($id)
     {
         $categorie = Categorie::query()->find($id);
-        return view('admin.categories.edit', ['categorie'=>$categorie]);
+        return view('admin.categories.edit', ['categorie' => $categorie]);
     }
 
     public function save(Request $request)

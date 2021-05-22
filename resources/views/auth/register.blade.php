@@ -1,9 +1,9 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
+{{--            <a href="/">--}}
+{{--                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />--}}
+{{--            </a>--}}
         </x-slot>
 
         <!-- Validation Errors -->
@@ -53,7 +53,7 @@
                     <span class="ml-2 text-sm text-gray-600">Admin</span>
                 </label>
             </div>
-                
+
 
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">

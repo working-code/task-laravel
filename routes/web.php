@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+Route::get('/', [\App\Http\Controllers\ProductController::class, 'all']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -29,14 +29,16 @@ Route::post('categories/save', [\App\Http\Controllers\CategorieController::class
 Route::get('categories/delete/{id}', [\App\Http\Controllers\CategorieController::class, 'delete'])->name('categories.delete');
 
 Route::get('products/all', [\App\Http\Controllers\ProductController::class, 'all'])->name('products.all');
-//Route::get('products/{id}', [\App\Http\Controllers\ProductController::class, 'one']);
+Route::get('products', [\App\Http\Controllers\ProductController::class, 'one'])->name('products.one');
 Route::get('products/new', [\App\Http\Controllers\ProductController::class, 'addView'])->name('products.new');
 Route::post('products/add', [\App\Http\Controllers\ProductController::class, 'add'])->name('products.add');
 Route::get('products/edit/{id}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
 Route::post('products/save', [\App\Http\Controllers\ProductController::class, 'save'])->name('products.save');
 Route::get('products/delete/{id}', [\App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
+Route::get('products/categorie', [\App\Http\Controllers\ProductController::class, 'allFromCategorie'])->name('products.categorie');
 
 Route::get('orders/all', [\App\Http\Controllers\OrderController::class, 'all'])->name('orders.all');
+Route::get('orders/my', [\App\Http\Controllers\OrderController::class, 'allForUser'])->name('orders.user');
 
 Route::get('notifications/all', [\App\Http\Controllers\NotificationController::class, 'all'])->name('notifications.all');
 Route::get('notifications/new', [\App\Http\Controllers\NotificationController::class, 'addView'])->name('notifications.new');

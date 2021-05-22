@@ -12,4 +12,9 @@ class Categorie extends Model
     protected $fillable = [
         'name'
     ];
+
+    public static function getName(int $id)
+    {
+        return Categorie::query('name')->find($id)->name;
+    }
 }
