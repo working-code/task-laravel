@@ -1,4 +1,3 @@
-@include('admin.menu')
 
 <x-app-layout>
     <x-slot name="header">
@@ -12,9 +11,14 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
-                    <form action="{{route('categories.add')}}" method="post">
+                    <div class="menu-admin">
+                        @include('admin.menu')
+                    </div>
+
+                    <form action="{{route('categories.add')}}" method="post" class="admin-add-games">
                         @csrf
-                        Название категории: <input type="text" name="name"><br />
+                        Название категории:<br />
+                        <input type="text" name="name"><br />
                         @error('name')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror

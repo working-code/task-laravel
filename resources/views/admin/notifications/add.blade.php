@@ -10,9 +10,15 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
-                    <form action="{{route('notifications.add')}}" method="post">
+
+                    <div class="menu-admin">
+                        @include('admin.menu')
+                    </div>
+
+                    <form action="{{route('notifications.add')}}" method="post" class="admin-add-games">
                         @csrf
-                        email: <input type="text" name="email"><br />
+                        email: <br />
+                        <input type="text" name="email"><br />
                         @error('email')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror

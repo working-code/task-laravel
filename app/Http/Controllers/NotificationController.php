@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Swift_Mailer;
+use Swift_Message;
+use Swift_SmtpTransport;
 
 class NotificationController extends Controller
 {
@@ -51,4 +55,31 @@ class NotificationController extends Controller
         $notification->delete();
         return redirect()->route('notifications.all');
     }
+
+    public static function sendNotification($id)
+    {
+        $order = Order::with('product')->find($id);
+        $emails =  array_column(Notification::all('email')->toArray(), 'email');
+//        dd(env('EMAIL_LOGIN'));
+        $emailMessage = "Заказ {$order->id}, email: {$order->email}, товар: {$order->product->name}, цена: {$order->product->price}";
+        $emailFrom = [env('EMAIL_LOGIN') => 'Games store'];
+        $emailTo = $emails;
+        $emailTheme = 'Уведомление о заказе игры ' . $order->product->name;
+
+        $countSend = 0;
+        try {
+            $transport = (new Swift_SmtpTransport(env('EMAIL_SMTP'), env('EMAIL_PORT'), 'ssl'))
+                ->setUsername(env('EMAIL_LOGIN'))
+                ->setPassword(env('EMAIL_PASSWORD'));
+            $mailer = new Swift_Mailer($transport);
+            $message = (new Swift_Message($emailTheme))
+                ->setFrom($emailFrom)
+                ->setTo($emailTo)
+                ->setBody($emailMessage);
+            $countSend = $mailer->send($message);
+        } catch (Exception $e) {
+//            out in log
+        }
+    }
+
 }

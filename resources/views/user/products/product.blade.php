@@ -24,7 +24,7 @@
                     <div class="product-container__content-text__price__value">
                         Цена: <b>{{$product->price}}</b>
                         руб
-                    </div><a href="#" class="btn btn-blue">Купить</a>
+                    </div><a href="{{route('orders.add')}}?id={{$product->id}}" class="btn btn-blue">Купить</a>
                 </div>
                 <div class="product-container__content-text__description">
                     {{$product->description}}
