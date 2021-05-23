@@ -26,10 +26,10 @@ class OrderController extends Controller
         } else {
             $email = $request->session()->get('email');
         }
-        if($email){
+        if ($email) {
             $orders = Order::with('product')->where('email', '=', $email)->get();
         }
-        return view(Role::getRole().'.orders.my', ['orders' => $orders]);
+        return view(Role::getRole() . '.orders.my', ['orders' => $orders]);
     }
 
     public function add(Request $request)
@@ -57,7 +57,7 @@ class OrderController extends Controller
 
     public function inputDataGuest(Request $request)
     {
-        return view('user.orders.create', ['id'=>$request->old('id')]);
+        return view('user.orders.create', ['id' => $request->old('id')]);
     }
 
     public function addDataGuestInSession(Request $request)

@@ -22,7 +22,7 @@ class Role extends Model
 
     public static function isAdmin()
     {
-        if (Auth::id() === self::getIdAdmin()){
+        if (Auth::id() === self::getIdAdmin()) {
             return true;
         }
         return false;

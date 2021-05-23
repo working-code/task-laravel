@@ -27,7 +27,7 @@ class NotificationController extends Controller
         $request->validate([
             'email' => 'required|email'
         ]);
-        $notification = new Notification(['email'=> $request->email]);
+        $notification = new Notification(['email' => $request->email]);
         $notification->save();
         return redirect()->route('notifications.all');
     }
@@ -35,7 +35,7 @@ class NotificationController extends Controller
     public function edit($id)
     {
         $notification = Notification::query()->find($id);
-        return view('admin.notifications.edit', ['notification'=>$notification]);
+        return view('admin.notifications.edit', ['notification' => $notification]);
     }
 
     public function save(Request $request)
@@ -59,7 +59,7 @@ class NotificationController extends Controller
     public static function sendNotification($id)
     {
         $order = Order::with('product')->find($id);
-        $emails =  array_column(Notification::all('email')->toArray(), 'email');
+        $emails = array_column(Notification::all('email')->toArray(), 'email');
 //        dd(env('EMAIL_LOGIN'));
         $emailMessage = "Заказ {$order->id}, email: {$order->email}, товар: {$order->product->name}, цена: {$order->product->price}";
         $emailFrom = [env('EMAIL_LOGIN') => 'Games store'];
